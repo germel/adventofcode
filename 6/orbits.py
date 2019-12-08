@@ -12,34 +12,20 @@ patha = []
 pathb = []
 
 def find_parent(n, u):
+    '''
+    Find "planet" u of orbiting body "n"
+    '''
     for i in u:
         if n in u[i]:
             return i
     return -1
 
-points = open("input.txt", 'r')
-
-for line in points:
-    orbrl = line[:-1].split(')')
-    if orbrl[0] in orb and orbrl[1] not in orb[orbrl[0]]:
-        orb[orbrl[0]] = orb[orbrl[0]] + [orbrl[1]]
-    else:
-        orb[orbrl[0]] = [orbrl[1]]
-
-for key in orb:
-    if orb[key] not in rh:
-        rh = rh + orb[key]
-
-for i in rh:
-    sigma = 0
-    parent = find_parent(i, orb)
-    while (parent != -1):
-        sigma += 1
-        parent = find_parent(parent, orb)
-    res += sigma
-print('The sum of direct and indirect orbits is: ', res)
-
 def find_path(a, b):
+    '''
+    To find the path between 2 bodies, first find each body's path to the root
+    and then discard the common parts for each path, leaving just the points
+    of interest
+    '''
     patha, pathb  = [a], [b]
     parenta = find_parent(a, orb)
     while (parenta != -1):
@@ -58,6 +44,29 @@ def find_path(a, b):
             pathb.pop(0)
         else:
             return patha, pathb
+
+points = open("input.txt", 'r')
+
+for line in points:
+    orbrl = line[:-1].split(')')
+    if orbrl[0] in orb and orbrl[1] not in orb[orbrl[0]]:
+        orb[orbrl[0]] += [orbrl[1]]
+    else:
+        orb[orbrl[0]] = [orbrl[1]]
+
+for key in orb:
+    if orb[key] not in rh:
+        rh += orb[key]
+
+for i in rh:
+    sigma = 0
+    parent = find_parent(i, orb)
+    while (parent != -1):
+        sigma += 1
+        parent = find_parent(parent, orb)
+    res += sigma
+
+print('The sum of direct and indirect orbits is: ', res)
 
 patha, pathb = find_path('YOU', 'SAN')
 

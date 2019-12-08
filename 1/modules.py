@@ -14,6 +14,6 @@ for line in m:
         if f > -1:
             ff += f
 
-print('fuel:', fuel)
+print('Fuel: ', fuel)
 print('Fuel for fuel: ', ff)
-print('Total fuel: :', ff+fuel)
+print('Total fuel: ', ff+fuel)
